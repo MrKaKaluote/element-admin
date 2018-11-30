@@ -5,6 +5,7 @@ import VueRouter from "vue-router"
 
 import login from '../page/login.vue'
 import home from '../page/home.vue'
+import table from '../page/table/index.vue'
 import notFound from '../page/404.vue'
 import menutab from '../page/menu1/menuTab.vue'
 import menutab1 from '../page/menu1/menuTab1.vue'
@@ -28,6 +29,19 @@ let routes = [
   {
     path: '/',
     component: home,
+    name: '业务一览表',
+    single: true,
+    children: [
+      {
+        path: '/table',
+        component: table,
+        name: '业务一览表'
+      }
+    ]
+  },
+  {
+    path: '/',
+    component: home,
     name: '导航一',
     iconCls: 'el-icon-message', //图标样式class
     children: [
@@ -47,7 +61,7 @@ let routes = [
     path: '/',
     component: home,
     name: '导航二',
-    iconCls: 'fa fa-id-card-o',
+    iconCls: 'el-icon-message',
     children: [
       {
         path: '/menutable',

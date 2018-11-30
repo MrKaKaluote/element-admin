@@ -30,6 +30,7 @@ module.exports = {
       '@': resolve('src'),
       'api': resolve('src/api'),
       'config': resolve('src/config'),
+      'common': resolve('src/components/common'),
     }
   },
   module: {

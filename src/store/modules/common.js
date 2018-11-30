@@ -3,7 +3,8 @@ import * as types from '../mutation-types.js'
 //全局状态
 const state = {
   username: '',
-  password: ''
+  password: '',
+  tabData: []
 }
 
 //getters 
@@ -13,6 +14,9 @@ const getters = {
   },
   password: state => {
     return state.password
+  },
+  tabData: state => {
+    return state.tabData
   }
 }
 
@@ -22,6 +26,9 @@ const mutations = {
   },
   [types.SET_PASSWORD] (state, password) {
   	state.password = password
+  },
+  [types.SET_TABDATA](state, tabData) {
+    state.tabData = tabData
   }
 }
 

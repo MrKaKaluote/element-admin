@@ -1,0 +1,39 @@
+@import "./them.scss";
+body{
+    overflow: hidden !important;
+}
+.el-menu-vertical-demo{
+    background-color: $globalBgColor !important;
+    width: 180px;
+}
+.el-menu-item, .el-submenu__title{
+    height: 42px;
+    line-height: 42px;
+    border-top: 1px solid $borderColor;
+}
+.el-submenu .el-menu-item{
+    height: 42px;
+    line-height: 42px;
+    background-color: $globalBgColor !important;
+    padding-left: 70px !important;
+}
+.el-menu-item.is-active {
+    color: #ffffff;
+    background-color: $baseColor !important;
+}
+.menu-expanded a {
+    text-decoration: none;
+}
+.menu-expanded .router-link-exact-active{
+    text-decoration: none;
+}
+.content-container {
+    padding: 0px !important;
+    padding-top: 0 !important;
+}
+.el-breadcrumb__inner{
+    color: #fff !important;
+}
+.el-submenu .el-menu-item{
+    min-width: 180px;
+}
