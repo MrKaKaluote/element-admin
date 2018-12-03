@@ -4,7 +4,9 @@ import * as types from '../mutation-types.js'
 const state = {
   username: '',
   password: '',
-  tabData: []
+  tabData: [],
+  treeData: [],
+  token: ''
 }
 
 //getters 
@@ -17,7 +19,13 @@ const getters = {
   },
   tabData: state => {
     return state.tabData
-  }
+  },
+  treeData: state => {
+    return state.treeData
+  },
+  token: state => {
+    return state.token
+  },
 }
 
 const mutations = {
@@ -29,6 +37,12 @@ const mutations = {
   },
   [types.SET_TABDATA](state, tabData) {
     state.tabData = tabData
+  },
+  [types.SET_TREEDTA](state, treeData) {
+    state.treeData = treeData
+  },
+  [types.SET_TOKEN](state, token) {
+    state.token = token
   }
 }
 

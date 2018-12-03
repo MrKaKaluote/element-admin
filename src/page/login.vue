@@ -1,7 +1,6 @@
 <template>
   <div class="login-box">
     <div class="login-page-container">
-      <!-- <button @click="login">login</button> -->
       <el-form
         :model="ruleForm2"
         :rules="rules2"
@@ -12,12 +11,10 @@
       >
         <h3 class="title">系统登录</h3>
         <el-form-item prop="account">
-          <!-- <el-input type="text" v-model="ruleForm2.account" auto-complete="off" placeholder="账号"></el-input> -->
-          <el-input type="text" v-model="ruleForm2.account" placeholder="账号"></el-input>
+          <el-input type="text" v-model="ruleForm2.account" placeholder="随便输"></el-input>
         </el-form-item>
         <el-form-item prop="checkPass">
-          <!--  <el-input type="password" v-model="ruleForm2.checkPass" auto-complete="off" placeholder="密码"></el-input> -->
-          <el-input type="password" v-model="ruleForm2.checkPass" placeholder="密码"></el-input>
+          <el-input type="password" v-model="ruleForm2.checkPass" placeholder="随便输"></el-input>
         </el-form-item>
         <el-checkbox click="remberuser" v-model="checked" checked class="remember">记住密码</el-checkbox>
         <el-form-item style="width:100%;">
@@ -38,21 +35,21 @@ export default {
     return {
       logining: false,
       ruleForm2: {
-        account: "admin",
-        checkPass: "1"
+        account: "",
+        checkPass: ""
       },
       rules2: {
         account: [
           {
             required: true,
-            message: "请输入账号",
+            message: "请输入登录账号",
             trigger: "blur"
           }
         ],
         checkPass: [
           {
             required: true,
-            message: "请输入密码",
+            message: "请输入登录密码",
             trigger: "blur"
           }
         ]
@@ -62,46 +59,64 @@ export default {
   },
   created() {
     this.ruleForm2.checkPass = "";
+    if (localStorage.getItem('userName')) {  // 记住密码操作
+      this.ruleForm2.account = localStorage.getItem('userName');
+      this.ruleForm2.checkPass = localStorage.getItem('password');
+    }
   },
   methods: {
     login() {
-      this.$refs.ruleForm2.validate((valid) => {
+      this.$refs.ruleForm2.validate(valid => {
         if (valid) {
-          this.$router.push({ path: '/table' });
-          // if (this.ruleForm2.account == "admin" && this.ruleForm2.checkPass == "1") {
-            // const params = {
-            //   userName: this.ruleForm2.account,
-            //   password: this.ruleForm2.checkPass
-            // }
-            // commonApi.loginUserNo(params).then((res) => {
-            //   let {data} = res
-            //   if (data.success === true) {
-            //     this.logining = false
-            //     this.$router.push({ path: '/menutab' });
-            //   } else {
-            //   }
-            // }).catch(() => {
-            //   $toast.show('对不起,连接服务器异常,请稍后再试!', 1500)
-            // })
-            // sessionStorage.setItem('user', JSON.stringify(params));
-          //   this.$router.push({ path: '/menutab' });
-          //   this.setUsername('admin');
-          //   this.setPassword('1');
-          // } else {
-          //   this.logining = false;
-          //   this.$alert('用户名或密码错误！', '提示信息', {
-          //     confirmButtonText: '确定'
+          this.logining = true;
+          // 模拟登录
+          setTimeout(() => {
+            const params = {
+              userName: this.ruleForm2.account,
+              password: this.ruleForm2.checkPass
+            };
+            sessionStorage.setItem("user", JSON.stringify(params)); // session存储用户信息
+            this.logining = false;
+            this.$router.push({ path: "/declare/ordermanage" });  // 去主页
+          }, 1000);
+          // const params = {
+          //   userName: this.ruleForm2.account,
+          //   password: this.ruleForm2.checkPass
+          // };
+          // commonApi.loginUserNo(params).then(res => {
+          //     let { data } = res;
+          //     this.logining = false;
+          //     if (data.success === true) {
+          //       this.$router.push({ path: "/declare/ordermanage" });  // 去主页
+          //       this.setTreeData(data.data); // 状态存储菜单节点
+          //       this.setToken(data.value); // 状态存储token
+          //       sessionStorage.setItem("user", JSON.stringify(params)); // session存储用户信息
+          //       sessionStorage.setItem("token", data.value); // session存储token
+          //       // 记住密码操作
+          //       if (this.checked) {
+          //         localStorage.setItem('userName', params.userName)
+          //         localStorage.setItem('password', params.password)
+          //       } else {
+          //         localStorage.clear();
+          //       }
+          //     } else {
+          //       this.$message.error(data.message);
+          //     }
+          //   })
+          //   .catch(() => {
+          //     this.$message.error("对不起,连接服务器异常,请稍后再试!");
           //   });
-          // }
         } else {
-          console.log('error submit!!');
+          console.log("error submit!!");
           return false;
         }
-      })
+      });
     },
     ...mapMutations({
       setUsername: types.SET_USERNAME,
-      setPassword: types.SET_PASSWORD
+      setPassword: types.SET_PASSWORD,
+      setTreeData: types.SET_TREEDTA,
+      setToken: types.SET_TOKEN
     })
   }
 };

@@ -26,10 +26,10 @@
       <aside :class="'menu-expanded'">
         <!--导航菜单-->
        <el-menu :default-active="$route.path" ref="bigmenu" class="el-menu-vertical-demo" background-color="#545c64" text-color="#fff" unique-opened router>
-         <template v-for="(item,index) in $router.options.routes" v-if="!item.hidden">
+         <template v-for="(item,index) in $router.options.routes" v-if="!item.hidden && checkContains(item.name)">
            <el-submenu :index="index+''" v-if="!item.single">
              <template slot="title"><i :class="item.iconCls"></i>{{item.name}}</template>
-             <el-menu-item v-for="child in item.children" @click="addRouter(child)" :index="child.path" :key="child.path" v-if="!child.hidden">{{child.name}}</el-menu-item>
+             <el-menu-item v-for="child in item.children" @click="addRouter(child, item.path +'/'+ child.path)" :index="item.path +'/'+ child.path" :key="item.path +'/'+ child.path" v-if="!child.hidden && checkContains(child.name)">{{child.name}}</el-menu-item>
            </el-submenu>
            <router-link v-else v-for="child in item.children" :index="child.path" :key="child.path" :to="child.path">
               <div @click="addRouter(child)" class="single-menu">{{child.name}}</div>
@@ -43,7 +43,7 @@
           <el-col :span="24">
             <div @click="changeRouter(index)" v-for="(option, index) in arry" class="cus-tab-box" :class="activepath==option.path?'activeTab':''">
               <span>{{option.name}}</span>
-              <span @click.stop="option.path!='/table' && removeTab(index)"><i class="fa fa-times close-icon" aria-hidden="true"></i></span>
+              <span @click.stop="arry.length!=1 && removeTab(index)"><i class="fa fa-times close-icon" aria-hidden="true"></i></span>
             </div>
           </el-col>
          </el-row>
@@ -61,24 +61,22 @@
 
 <script>
 import { mapGetters } from "vuex";
-import { mapMutations } from 'vuex';
-import * as types from '../store/mutation-types'
+import { mapMutations } from "vuex";
+import * as types from "../store/mutation-types";
 export default {
   components: {},
   data() {
     return {
       sysName: "管理系统",
       sysUserName: "",
-      activepath: '/table',
-      arry: [{
-        name: "业务一览表",
-        path: "/table"
-      }]
+      activepath: "",
+      arry: [],
+      treeArry: []
     };
   },
-  watch:{
-    $route(to,from){
-     this.activepath = to.path
+  watch: {
+    $route(to, from) {
+      this.activepath = to.path;
     }
   },
   methods: {
@@ -95,40 +93,73 @@ export default {
         .catch(() => {});
     },
     // 往tab页添加router
-    addRouter(data) {
-      let add = true
-      for(let i=0;i<this.arry.length;i++) {
-        if(this.arry[i].path == data.path) {
-          add = false
+    addRouter(data, path) {
+      const obj = Object.assign({}, data);
+      obj.path = path;
+      let add = true;
+      for (let i = 0; i < this.arry.length; i++) {
+        if (this.arry[i].path == obj.path) {
+          add = false;
         }
       }
       if (add) {
-        this.arry.push(data)
+        this.arry.push(obj);
       }
-      add = true
+      add = true;
+      sessionStorage.setItem("tabData", JSON.stringify(this.arry));
     },
     // 操作tab
     changeRouter(index) {
-      this.$router.push(this.arry[index].path)
+      this.$router.push(this.arry[index].path);
     },
+    // 检查树结构是否包含当前节点
+    checkContains(name) {
+      return true;
+      // return this.treeArry.includes(name);
+    },
+    // 遍历后台返回权限树节点数据
+    checkTreeNode(tree) {
+      for (var i = 0; i < tree.length; i++) {
+        this.treeArry.push(tree[i].name)
+        if (tree[i].child && tree[i].child.length > 0) {
+          this.checkTreeNode(tree[i].child);
+        }
+      }
+    },
+    // remove Tab
     removeTab(index) {
       this.arry.splice(index, 1);
-      this.$router.push(this.arry[index-1].path)
+      if (index == 0) {
+        this.$router.push(this.arry[0].path);
+      } else {
+        this.$router.push(this.arry[index - 1].path);
+      }
+      sessionStorage.setItem("tabData", JSON.stringify(this.arry));
     },
     ...mapMutations({
       setTabData: types.SET_TABDATA
     })
   },
   created() {
-    console.log(this.$route.path)
-    if (this.userName) {
-      this.sysUserName = this.userName
+    this.checkTreeNode(this.treeData);
+    if (JSON.parse(sessionStorage.getItem("tabData"))) {
+      this.arry = JSON.parse(sessionStorage.getItem("tabData"));
+      this.activepath = this.$route.path;
     } else {
-      this.sysUserName = 'admin'
+      let obj = {};
+      obj.path = this.$route.path;
+      obj.name = this.$route.name;
+      this.activepath = this.$route.path;
+      this.arry.push(obj);
+    }
+    if (this.userName) {
+      this.sysUserName = this.userName;
+    } else {
+      this.sysUserName = "admin";
     }
   },
   computed: {
-    ...mapGetters(["username", "password"])
+    ...mapGetters(["username", "password", "treeData"])
   },
   mounted() {
     var user = sessionStorage.getItem("user");
@@ -173,7 +204,7 @@ export default {
       text-align: right;
       width: 180px;
       color: $baseColor;
-      .logo-img{
+      .logo-img {
         display: inline-block;
         width: 40px;
         height: 40px;
@@ -181,7 +212,7 @@ export default {
         background-image: url("../assets/img/element-ui.svg");
         background-size: cover;
       }
-      .logo-title{
+      .logo-title {
         display: inline-block;
         line-height: 50px;
         width: 100px;
@@ -235,7 +266,7 @@ export default {
       flex: 0 0 180px;
       width: 230px;
     }
-    .single-menu{
+    .single-menu {
       height: 40px;
       line-height: 40px;
       padding-left: 45px;
@@ -246,10 +277,10 @@ export default {
       flex: 1;
       overflow-y: scroll;
       padding: 20px;
-      .nav-tabs{
+      .nav-tabs {
         font-size: 12px;
         border-bottom: 1px solid #e4e7ed;
-        .cus-tab-box{
+        .cus-tab-box {
           display: inline-block;
           margin: 5px 0px 5px 5px;
           padding: 3px 10px;
@@ -257,17 +288,17 @@ export default {
           border-radius: 2px;
           cursor: pointer;
         }
-        .activeTab{
+        .activeTab {
           background-color: $baseColor;
           color: #fff;
           border-color: #fff;
         }
-        .close-icon{
-          transform:rotate(0deg);
-          transition:transform 1s;
+        .close-icon {
+          transform: rotate(0deg);
+          transition: transform 1s;
         }
-        .close-icon:hover{
-          transform:rotate(180deg);
+        .close-icon:hover {
+          transform: rotate(180deg);
         }
       }
       .content-wrapper {
@@ -276,7 +307,7 @@ export default {
       }
     }
   }
-  .breadcrumb-container{
+  .breadcrumb-container {
     margin-top: 20px;
     margin-left: 20px;
   }

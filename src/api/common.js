@@ -5,5 +5,5 @@ import {fetch, fetchapi, baseUrl} from 'config/index.js'
  * @returns {*}
  */
 export function loginUserNo(params) {
-  return fetch(`${baseUrl}root/LoginController/doLogin?userName=${params.userName}&password=${params.password}`, params)
+  return fetch(`${baseUrl}/api/declare/login?userName=${params.userName}&password=${params.password}`, params)
 }

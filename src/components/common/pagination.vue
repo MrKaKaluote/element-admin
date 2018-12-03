@@ -37,5 +37,9 @@ export default {
 <style scoped lang="scss">
 @import "../../assets/css/them.scss";
 .pagination-content {
+  // text-align: right;
+  // margin-right: 50px;
+  margin-top: 10px;
+  margin-left: 10px;
 }
 </style>

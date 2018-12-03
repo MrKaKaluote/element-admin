@@ -5,15 +5,19 @@ import VueRouter from "vue-router"
 
 import login from '../page/login.vue'
 import home from '../page/home.vue'
-import table from '../page/table/index.vue'
 import notFound from '../page/404.vue'
-import menutab from '../page/menu1/menuTab.vue'
-import menutab1 from '../page/menu1/menuTab1.vue'
-import menutable from '../page/menu2/menuTable.vue'
+import ordermanage from '../page/declareManage/orderManage.vue'
+import detailmanage from '../page/declareManage/detailManage.vue'
+import configmanage from '../page/configManage/configManage.vue'
 // 要告诉 vue 使用 vueRouter
 Vue.use(VueRouter);
 
 let routes = [
+  {
+    path: "/",
+    redirect: '/login',
+    hidden: true
+  },
   {
     path: '/login',
     component: login,
@@ -27,46 +31,33 @@ let routes = [
     hidden: true
   },
   {
-    path: '/',
+    path: '/declare',
     component: home,
-    name: '业务一览表',
-    single: true,
-    children: [
-      {
-        path: '/table',
-        component: table,
-        name: '业务一览表'
-      }
-    ]
-  },
-  {
-    path: '/',
-    component: home,
-    name: '导航一',
+    name: '申报管理',
     iconCls: 'el-icon-message', //图标样式class
     children: [
       {
-        path: '/menutab',
-        component: menutab,
-        name: 'Tab'
+        path: 'ordermanage',
+        component: ordermanage,
+        name: '订单信息管理'
       },
       {
-        path: '/menutab1',
-        component: menutab1,
-        name: 'Tab1'
+        path: 'detailmanage',
+        component: detailmanage,
+        name: '清单信息管理'
       }
     ]
   },
   {
-    path: '/',
+    path: '/config',
     component: home,
-    name: '导航二',
+    name: '配置管理',
     iconCls: 'el-icon-message',
     children: [
       {
-        path: '/menutable',
-        component: menutable,
-        name: 'Table'
+        path: 'configmanage',
+        component: configmanage,
+        name: '配置管理'
       }
     ]
   }
