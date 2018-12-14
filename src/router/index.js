@@ -6,9 +6,9 @@ import VueRouter from "vue-router"
 import login from '../page/login.vue'
 import home from '../page/home.vue'
 import notFound from '../page/404.vue'
-import ordermanage from '../page/declareManage/orderManage.vue'
-import detailmanage from '../page/declareManage/detailManage.vue'
-import configmanage from '../page/configManage/configManage.vue'
+import sub11 from '../page/menu1/sub1.vue'
+import sub12 from '../page/menu1/sub2.vue'
+import sub21 from '../page/menu2/sub1.vue'
 // 要告诉 vue 使用 vueRouter
 Vue.use(VueRouter);
 
@@ -31,32 +31,32 @@ let routes = [
     hidden: true
   },
   {
-    path: '/declare',
+    path: '/menu1',
     component: home,
-    name: '申报管理',
+    name: '菜單一',
     iconCls: 'el-icon-message', //图标样式class
     children: [
       {
-        path: 'ordermanage',
-        component: ordermanage,
-        name: '订单信息管理'
+        path: 'sub1',
+        component: sub11,
+        name: '子菜單一'
       },
       {
-        path: 'detailmanage',
-        component: detailmanage,
-        name: '清单信息管理'
+        path: 'sub2',
+        component: sub12,
+        name: '子菜單二'
       }
     ]
   },
   {
-    path: '/config',
+    path: '/menu2',
     component: home,
-    name: '配置管理',
+    name: '菜單二',
     iconCls: 'el-icon-message',
     children: [
       {
-        path: 'configmanage',
-        component: configmanage,
+        path: 'sub1',
+        component: sub21,
         name: '配置管理'
       }
     ]

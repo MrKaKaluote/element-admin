@@ -77,7 +77,7 @@ export default {
             };
             sessionStorage.setItem("user", JSON.stringify(params)); // session存储用户信息
             this.logining = false;
-            this.$router.push({ path: "/declare/ordermanage" });  // 去主页
+            this.$router.push({ path: "/menu1/sub1" });  // 去主页
           }, 1000);
           // const params = {
           //   userName: this.ruleForm2.account,
