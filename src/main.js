@@ -9,10 +9,13 @@ import App from './App.vue';
 import 'font-awesome/css/font-awesome.min.css';
 import router from "./router";
 import VCharts from 'v-charts'
+import Directives from './utils/directive'
 
 Vue.use(ElementUI);
 Vue.use(Router);
 Vue.use(VCharts);
+Vue.use(Directives);
+
 
 Vue.config.productionTip = false
  /**
