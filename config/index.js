@@ -1,20 +1,35 @@
+/*
+ * @Description:
+ * @Autor: GaoSong
+ * @Date: 2021-01-02 12:29:38
+ * @LastEditors: GaoSong👉😜👈
+ * @LastEditTime: 2021-01-02 14:49:22
+ */
 'use strict'
 // Template version: 1.3.1
 // see http://vuejs-templates.github.io/webpack for documentation.
 
 const path = require('path')
 
-module.exports = {
-  dev: {
+function resolve(dir) {
+  return path.join(__dirname, dir)
+}
 
+module.exports = {
+  lintOnSave: true,
+  chainWebpack: (config) => {
+    config.resolve.alias
+      .set('@', resolve('src'))
+  },
+  dev: {
     // Paths
     assetsSubDirectory: 'static',
     assetsPublicPath: '/',
     proxyTable: {
-        '/api/': {
-          target: '',
-          changeOrigin: true
-        }
+      '/api/': {
+        target: '',
+        changeOrigin: true
+      }
     },
 
     // Various Dev Server settings
@@ -25,7 +40,6 @@ module.exports = {
     notifyOnErrors: true,
     poll: false, // https://webpack.js.org/configuration/dev-server/#devserver-watchoptions-
 
-    
     /**
      * Source Maps
      */

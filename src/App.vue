@@ -1,7 +1,14 @@
+<!--
+ * @Description:
+ * @Autor: GaoSong
+ * @Date: 2021-01-02 12:29:38
+ * @LastEditors: GaoSong👉😜👈
+ * @LastEditTime: 2021-01-02 14:50:34
+-->
 <template>
-<div id="app">
-    <router-view></router-view>
-</div>
+  <div id="app">
+    <router-view/>
+  </div>
 </template>
 
 <script>

@@ -2,23 +2,23 @@
   <div class="login-box">
     <div class="login-page-container">
       <el-form
+        ref="ruleForm2"
         :model="ruleForm2"
         :rules="rules2"
-        ref="ruleForm2"
         label-position="left"
         label-width="0px"
         class="demo-ruleForm login-container"
       >
         <h3 class="title">系统登录</h3>
         <el-form-item prop="account">
-          <el-input type="text" v-model="ruleForm2.account" placeholder="随便输"></el-input>
+          <el-input v-model="ruleForm2.account" type="text" placeholder="随便输"/>
         </el-form-item>
         <el-form-item prop="checkPass">
-          <el-input type="password" v-model="ruleForm2.checkPass" placeholder="随便输"></el-input>
+          <el-input v-model="ruleForm2.checkPass" type="password" placeholder="随便输"/>
         </el-form-item>
-        <el-checkbox click="remberuser" v-model="checked" checked class="remember">记住密码</el-checkbox>
+        <el-checkbox v-model="checked" click="remberuser" checked class="remember">记住密码</el-checkbox>
         <el-form-item style="width:100%;">
-          <el-button type="primary" style="width:100%;" @click="login" :loading="logining">登录</el-button>
+          <el-button :loading="logining" type="primary" style="width:100%;" @click="login">登录</el-button>
         </el-form-item>
       </el-form>
     </div>
@@ -26,59 +26,59 @@
 </template>
 
 <script>
-import { mapMutations } from "vuex";
-import * as commonApi from "api/common";
-import * as types from "../store/mutation-types";
+import { mapMutations } from 'vuex'
+// import * as commonApi from 'api/common'
+import * as types from '../store/mutation-types'
 export default {
   props: {},
   data() {
     return {
       logining: false,
       ruleForm2: {
-        account: "",
-        checkPass: ""
+        account: '',
+        checkPass: ''
       },
       rules2: {
         account: [
           {
             required: true,
-            message: "请输入登录账号",
-            trigger: "blur"
+            message: '请输入登录账号',
+            trigger: 'blur'
           }
         ],
         checkPass: [
           {
             required: true,
-            message: "请输入登录密码",
-            trigger: "blur"
+            message: '请输入登录密码',
+            trigger: 'blur'
           }
         ]
       },
       checked: true
-    };
+    }
   },
   created() {
-    this.ruleForm2.checkPass = "";
-    if (localStorage.getItem('userName')) {  // 记住密码操作
-      this.ruleForm2.account = localStorage.getItem('userName');
-      this.ruleForm2.checkPass = localStorage.getItem('password');
+    this.ruleForm2.checkPass = ''
+    if (localStorage.getItem('userName')) { // 记住密码操作
+      this.ruleForm2.account = localStorage.getItem('userName')
+      this.ruleForm2.checkPass = localStorage.getItem('password')
     }
   },
   methods: {
     login() {
       this.$refs.ruleForm2.validate(valid => {
         if (valid) {
-          this.logining = true;
+          this.logining = true
           // 模拟登录
           setTimeout(() => {
             const params = {
               userName: this.ruleForm2.account,
               password: this.ruleForm2.checkPass
-            };
-            sessionStorage.setItem("user", JSON.stringify(params)); // session存储用户信息
-            this.logining = false;
-            this.$router.push({ path: "/menu1/sub1" });  // 去主页
-          }, 1000);
+            }
+            sessionStorage.setItem('user', JSON.stringify(params)) // session存储用户信息
+            this.logining = false
+            this.$router.push({ path: '/menu1/sub1' }) // 去主页
+          }, 1000)
           // const params = {
           //   userName: this.ruleForm2.account,
           //   password: this.ruleForm2.checkPass
@@ -107,10 +107,10 @@ export default {
           //     this.$message.error("对不起,连接服务器异常,请稍后再试!");
           //   });
         } else {
-          console.log("error submit!!");
-          return false;
+          console.log('error submit!!')
+          return false
         }
-      });
+      })
     },
     ...mapMutations({
       setUsername: types.SET_USERNAME,
@@ -119,7 +119,7 @@ export default {
       setToken: types.SET_TOKEN
     })
   }
-};
+}
 </script>
 
 <style lang="scss">
