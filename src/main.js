@@ -9,7 +9,7 @@ import App from './App.vue';
 import 'font-awesome/css/font-awesome.min.css';
 import router from "./router";
 import VCharts from 'v-charts'
-import Directives from './utils/directive'
+import Directives from 'g-directives'
 
 Vue.use(ElementUI);
 Vue.use(Router);
